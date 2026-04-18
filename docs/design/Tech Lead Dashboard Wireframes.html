@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Tech Lead Dashboard — Wireframes</title>
+<meta name="viewport" content="width=1440" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --hand: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --display: 'Orbitron', 'Space Grotesk', sans-serif;
+    /* Kanagawa Wave (dark) — inspired by Hokusai's Great Wave palette */
+    --bg: #1f1f28;           /* sumiInk1 */
+    --bg-2: #2a2a37;         /* sumiInk3 */
+    --bg-3: #363646;         /* sumiInk4 */
+    --ink: #dcd7ba;          /* fujiWhite */
+    --ink-2: #c8c093;        /* oldWhite */
+    --ink-3: #727169;        /* fujiGray */
+    --line: #54546d;         /* sumiInk6 */
+    --line-2: #363646;       /* sumiInk4 */
+    --ok: #98bb6c;           /* springGreen */
+    --ok-bg: rgba(152,187,108,0.14);
+    --fail: #e46876;         /* waveRed */
+    --fail-bg: rgba(228,104,118,0.14);
+    --run: #e6c384;          /* carpYellow */
+    --run-bg: rgba(230,195,132,0.14);
+    --link: #7fb4ca;         /* waveBlue2 / crystalBlue */
+    --link-bg: rgba(127,180,202,0.14);
+    --purple: #957fb8;       /* oniViolet */
+  }
+  [data-theme="light"] {
+    /* Kanagawa Lotus (light) */
+    --bg: #f2ecbc;           /* lotusWhite2 - warm paper */
+    --bg-2: #e9e0c4;         /* lotusWhite4 */
+    --bg-3: #dcd5ad;         /* lotusWhite5 */
+    --ink: #545464;          /* lotusInk1 */
+    --ink-2: #43436c;        /* lotusInk2 */
+    --ink-3: #8a8980;        /* lotusGray */
+    --line: #a09cac;         /* lotusViolet3 */
+    --line-2: #c9c9a7;
+    --ok: #6f894e;           /* lotusGreen */
+    --ok-bg: rgba(111,137,78,0.14);
+    --fail: #c84053;         /* lotusRed */
+    --fail-bg: rgba(200,64,83,0.12);
+    --run: #77713f;          /* lotusYellow2 */
+    --run-bg: rgba(119,113,63,0.14);
+    --link: #4d699b;         /* lotusBlue2 */
+    --link-bg: rgba(77,105,155,0.14);
+    --purple: #624c83;       /* lotusViolet1 */
+  }
+  html, body { margin:0; padding:0; background: var(--bg); color: var(--ink); font-family: var(--hand); }
+  body { min-height: 100vh; }
+  * { box-sizing: border-box; }
+
+  /* Hand-drawn borders via svg filter */
+  .rough { border: 1.5px solid var(--line); border-radius: 10px 12px 9px 11px / 11px 9px 12px 10px; }
+  .rough-2 { border: 1.5px solid var(--line); border-radius: 14px 9px 13px 10px / 9px 14px 10px 13px; }
+  .rough-sm { border: 1.2px solid var(--line); border-radius: 6px 8px 5px 7px / 7px 5px 8px 6px; }
+  .dashed { border: 1.5px dashed var(--line); border-radius: 10px 12px 9px 11px / 11px 9px 12px 10px; }
+
+  .mono { font-family: var(--mono); font-size: 12px; }
+  .hand { font-family: var(--hand); }
+  .muted { color: var(--ink-2); }
+  .faint { color: var(--ink-3); }
+
+  /* Layout shell */
+  .app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--bg-2); border-right: 1.5px solid var(--line-2); padding: 18px 14px; position: sticky; top:0; height: 100vh; overflow:auto;}
+  .brand { display:flex; align-items:center; gap:10px; font-size: 18px; font-weight: 700; margin-bottom: 18px; font-family: var(--display); letter-spacing: 0.1em; text-transform: uppercase;}
+  .brand .logo { width: 30px; height: 30px; background: var(--ink); color: var(--bg); display:grid; place-items:center; border-radius: 8px 10px 7px 9px/9px 7px 10px 8px; font-weight:700; transform: rotate(-3deg); }
+  .navlbl { font-size: 12px; letter-spacing: 0.08em; color: var(--ink-3); text-transform: uppercase; margin: 14px 6px 6px; font-family: var(--mono); }
+  .navi { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius: 8px; color: var(--ink-2); font-size: 16px; cursor:pointer; }
+  .navi:hover { background: var(--bg-3); color: var(--ink); }
+  .navi .badge { margin-left:auto; font-family: var(--mono); font-size: 11px; color: var(--ink-3); background: var(--bg-3); padding: 2px 6px; border-radius: 6px; }
+  .navi.active { background: var(--bg-3); color: var(--ink); }
+  .sq { width:14px; height:14px; border: 1.4px solid currentColor; border-radius: 3px 5px 4px 3px / 4px 3px 5px 4px; display:inline-block; }
+
+  .main { padding: 18px 26px 40px; max-width: 1400px; }
+  .topbar { display:flex; align-items:center; gap: 14px; margin-bottom: 14px; }
+  .crumb { color: var(--ink-2); font-size: 15px; display:flex; gap:8px; align-items:center; }
+  .crumb b { color: var(--ink); }
+  .search { flex: 1; max-width: 380px; padding: 8px 12px; background: var(--bg-2); color: var(--ink-2); font-family: var(--hand); font-size: 15px; }
+  .iconbtn { width: 34px; height: 34px; display:grid; place-items:center; background: var(--bg-2); cursor:pointer; color: var(--ink-2); font-size: 16px;}
+  .iconbtn:hover { color: var(--ink); }
+  .btn { padding: 7px 12px; background: var(--bg-2); color: var(--ink); font-family: var(--hand); font-size: 15px; cursor:pointer; }
+  .btn.primary { background: var(--ink); color: var(--bg); }
+  .dot-live { width: 8px; height:8px; border-radius: 50%; background: var(--ok); display:inline-block; box-shadow: 0 0 0 3px var(--ok-bg); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  /* tabs */
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin: 8px 0 20px; }
+  .tab { padding: 8px 14px; cursor:pointer; font-size: 13px; color: var(--ink-2); background: var(--bg-2); border: 1.5px solid var(--line-2); border-radius: 10px 12px 9px 11px / 11px 9px 12px 10px; font-family: var(--display); letter-spacing: 0.08em; text-transform: uppercase;}
+  .tab.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .tab small { font-family: var(--mono); font-size: 11px; opacity: 0.7; margin-left: 6px;}
+
+  /* wire shapes */
+  .pill { display:inline-flex; align-items:center; gap:6px; padding: 2px 9px; border-radius: 999px; font-family: var(--mono); font-size: 11px; border: 1.4px solid currentColor; }
+  .pill.ok { color: var(--ok); background: var(--ok-bg); }
+  .pill.fail { color: var(--fail); background: var(--fail-bg); }
+  .pill.run { color: var(--run); background: var(--run-bg); }
+  .pill.link { color: var(--link); background: var(--link-bg); }
+  .pill.neutral { color: var(--ink-2); background: var(--bg-3); border-color: var(--line); }
+
+  .chip { display:inline-flex; align-items:center; gap:5px; padding: 1px 7px; background: var(--bg-3); color: var(--ink-2); font-family: var(--mono); font-size: 11px; border-radius: 5px 7px 4px 6px/6px 4px 7px 5px;}
+  .chip svg { width: 11px; height: 11px; }
+
+  /* avatar */
+  .av { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-3); display:inline-grid; place-items:center; font-size:11px; font-family: var(--mono); color: var(--ink); border: 1px solid var(--line); }
+
+  /* status dot */
+  .sdot { width: 10px; height: 10px; border-radius: 50%; display:inline-block; border: 1.2px solid currentColor; }
+  .sdot.ok { background: var(--ok); color: var(--ok); }
+  .sdot.fail { background: var(--fail); color: var(--fail); }
+  .sdot.run { background: var(--run); color: var(--run); animation: pulse 1.4s infinite; }
+  .sdot.skip { background: transparent; color: var(--ink-3); }
+
+  /* divider */
+  .wline { height: 1.5px; background: var(--line-2); margin: 10px 0; }
+
+  .section-h { display:flex; align-items:baseline; gap:10px; margin: 22px 0 8px; }
+  .section-h h2 { font-family: var(--display); font-size: 20px; margin:0; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; display:inline-block; }
+  .section-h .count { color: var(--ink-3); font-family: var(--mono); font-size: 13px; }
+
+  /* density */
+  [data-density="compact"] .card { padding: 10px 12px; }
+  [data-density="compact"] .row { padding: 6px 10px; }
+  [data-density="comfortable"] .card { padding: 18px 18px; }
+  [data-density="comfortable"] .row { padding: 12px 14px; }
+  .card { padding: 14px; background: var(--bg-2); }
+  .row { padding: 10px 12px; }
+
+  /* Tweaks panel */
+  .tweaks-panel {
+    position: fixed; right: 16px; bottom: 16px; width: 280px;
+    background: var(--bg-2); color: var(--ink);
+    padding: 14px; z-index: 100;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    display: none;
+  }
+  .tweaks-panel.open { display:block; }
+  .tweaks-panel h3 { margin: 0 0 10px; font-size: 15px; font-family: var(--display); letter-spacing: 0.08em; text-transform: uppercase;}
+  .tweaks-row { display:flex; align-items:center; justify-content: space-between; margin: 8px 0; font-size: 14px; }
+  .tweaks-row select, .tweaks-row button {
+    background: var(--bg-3); color: var(--ink); border: 1.2px solid var(--line);
+    padding: 4px 8px; font-family: var(--hand); font-size: 14px; cursor:pointer;
+    border-radius: 6px 8px 5px 7px/7px 5px 8px 6px;
+  }
+  .note-stamp { position: fixed; top: 14px; right: 16px; z-index: 40; display:flex; gap:8px; align-items:center;}
+
+  /* Kanban columns */
+  .kan { display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kan .col { background: var(--bg-2); padding: 12px; min-height: 300px; }
+  .kan .col h4 { margin: 0 0 10px; font-size: 16px; display:flex; align-items:center; gap:8px;}
+
+  /* Grid of repo cards */
+  .gridR { display:grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(var(--card-min, 340px), 1fr)); }
+
+  /* Timeline */
+  .tl { display:grid; gap:6px; }
+  .tl .bar { height: 10px; background: var(--bg-3); position: relative; border-radius: 3px; }
+  .tl .seg { position:absolute; top:0; bottom:0; border-radius: 3px; }
+
+  /* squiggle */
+  .squiggle { display:block; width: 100%; height: 6px; color: var(--ink-3);}
+
+  /* small header row in table */
+  .th { display:grid; gap: 10px; padding: 6px 12px; font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .tbl-row { display:grid; gap: 10px; align-items:center; padding: 10px 12px; border-top: 1.5px solid var(--line-2); }
+  .tbl-row:first-of-type { border-top: none; }
+
+  /* legend */
+  .legend { display:flex; gap:10px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+
+  /* heatmap grid */
+  .hm { display:grid; grid-template-columns: 120px repeat(12, 1fr); gap: 3px; align-items:center; }
+  .hm .cell { height: 26px; border-radius: 3px; background: var(--bg-3); border: 1px solid var(--line-2); display:grid; place-items:center; font-family: var(--mono); font-size: 10px; color: var(--ink-3);}
+  .hm .cell.ok { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+  .hm .cell.fail { background: var(--fail-bg); border-color: var(--fail); color: var(--fail); }
+  .hm .cell.run { background: var(--run-bg); border-color: var(--run); color: var(--run); }
+  .hm .cell.skip { color: var(--ink-3); }
+  .hm .label { font-family: var(--mono); font-size: 12px; color: var(--ink); overflow:hidden; text-overflow: ellipsis; white-space: nowrap;}
+
+  /* Wireframe "paper" texture: subtle grid */
+  .paper {
+    background-image:
+      linear-gradient(var(--line-2) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-2) 1px, transparent 1px);
+    background-size: 24px 24px, 24px 24px;
+    background-position: -1px -1px, -1px -1px;
+    background-color: var(--bg);
+    opacity: 1;
+  }
+  .paper > * { background: transparent; }
+
+  /* subtle paper for full app */
+  body.paper-on { background-image:
+      radial-gradient(var(--line-2) 0.8px, transparent 0.8px);
+      background-size: 22px 22px; }
+
+  /* note */
+  .notebox {
+    padding: 10px 12px;
+    background: var(--bg-2);
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  .notebox b { color: var(--ink); }
+
+  /* Scrollable area cue */
+  .scroll-fade { position: relative; }
+
+  /* responsive */
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { position: static; height:auto; }
+    .kan { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="application/json" id="mock-data">
+{
+  "project": "platform-core",
+  "repos": [
+    { "name": "api-gateway",        "owner": "backend",   "pipelines": [
+      { "branch": "main",    "id": 149605, "status": "passed",  "dur": "00:03:46", "age": "12m",  "author": "aitor",  "commit": "4e6a514f", "title": "fix(auth): refresh token TTL", "stages": ["ok","ok","ok","ok","ok"] },
+      { "branch": "develop", "id": 149604, "status": "running", "dur": "00:02:10", "age": "2m",   "author": "lucia",  "commit": "d2e1b8a9", "title": "feat(rate-limit): burst window", "stages": ["ok","ok","run","skip","skip"] },
+      { "branch": "release/1.12", "id": 149590, "status": "passed",  "dur": "00:04:02", "age": "3h",  "author": "marco",  "commit": "aa113cef", "title": "chore: bump 1.12.0-rc.2", "stages": ["ok","ok","ok","ok","ok"] }
+    ]},
+    { "name": "auth-service",       "owner": "backend",   "pipelines": [
+      { "branch": "main",    "id": 98132, "status": "failed",  "dur": "00:05:11", "age": "35m", "author": "noa",    "commit": "9c02fd00", "title": "test(oauth): flaky refresh spec", "stages": ["ok","ok","fail","skip","skip"] },
+      { "branch": "develop", "id": 98131, "status": "passed",  "dur": "00:04:40", "age": "1h",  "author": "sara",   "commit": "1b77aa20", "title": "feat(mfa): backup codes", "stages": ["ok","ok","ok","ok","ok"] }
+    ]},
+    { "name": "billing-worker",     "owner": "payments",  "pipelines": [
+      { "branch": "main",    "id": 40211, "status": "passed",  "dur": "00:06:22", "age": "2h",  "author": "david",  "commit": "7d9e4411", "title": "fix(invoice): rounding cents", "stages": ["ok","ok","ok","ok","ok"] },
+      { "branch": "develop", "id": 40214, "status": "failed",  "dur": "00:02:58", "age": "18m", "author": "elena",  "commit": "33b001fa", "title": "refactor(stripe): webhook retry", "stages": ["ok","fail","skip","skip","skip"] }
+    ]},
+    { "name": "notif-service",      "owner": "platform",  "pipelines": [
+      { "branch": "main",    "id": 22003, "status": "passed",  "dur": "00:02:45", "age": "5h",  "author": "aitor",  "commit": "ee44bbcc", "title": "chore: upgrade node 22", "stages": ["ok","ok","ok","ok","ok"] },
+      { "branch": "develop", "id": 22010, "status": "running", "dur": "00:01:24", "age": "1m",  "author": "marco",  "commit": "cc0d11ab", "title": "feat: push provider fallback", "stages": ["ok","run","skip","skip","skip"] }
+    ]},
+    { "name": "web-dashboard",      "owner": "frontend",  "pipelines": [
+      { "branch": "main",    "id": 77112, "status": "passed",  "dur": "00:07:01", "age": "4h",  "author": "sara",   "commit": "0a0a0a01", "title": "feat(ui): pipeline timeline", "stages": ["ok","ok","ok","ok","ok"] },
+      { "branch": "develop", "id": 77118, "status": "passed",  "dur": "00:06:48", "age": "40m", "author": "lucia",  "commit": "b2b2b202", "title": "fix(tooltip): position flip", "stages": ["ok","ok","ok","ok","ok"] },
+      { "branch": "release/2.4", "id": 77120, "status": "failed", "dur": "00:03:12", "age": "22m", "author": "david", "commit": "c3c3c303", "title": "test(e2e): login broken on safari", "stages": ["ok","ok","fail","skip","skip"] }
+    ]},
+    { "name": "mobile-app",         "owner": "mobile",    "pipelines": [
+      { "branch": "main",    "id": 55010, "status": "passed", "dur": "00:08:58", "age": "1d",  "author": "noa",   "commit": "f00dcafe", "title": "release 3.7.0", "stages": ["ok","ok","ok","ok","ok"] },
+      { "branch": "develop", "id": 55022, "status": "running","dur": "00:04:30", "age": "3m",  "author": "elena", "commit": "deadbeef", "title": "feat(nav): deep links v2", "stages": ["ok","ok","run","skip","skip"] }
+    ]},
+    { "name": "search-index",       "owner": "data",      "pipelines": [
+      { "branch": "main",    "id": 18004, "status": "passed", "dur": "00:12:10", "age": "6h",  "author": "marco", "commit": "11223344", "title": "chore: reindex job schedule", "stages": ["ok","ok","ok","ok","ok"] },
+      { "branch": "develop", "id": 18010, "status": "passed", "dur": "00:11:58", "age": "2h",  "author": "aitor", "commit": "55667788", "title": "perf: ngram tokenizer", "stages": ["ok","ok","ok","ok","ok"] }
+    ]},
+    { "name": "analytics-ingest",   "owner": "data",      "pipelines": [
+      { "branch": "main",    "id": 9102, "status": "failed",  "dur": "00:09:21", "age": "50m", "author": "sara",  "commit": "9ab0cd12", "title": "fix(kafka): offset commit", "stages": ["ok","fail","skip","skip","skip"] },
+      { "branch": "develop", "id": 9110, "status": "passed",  "dur": "00:08:40", "age": "15m", "author": "lucia", "commit": "12ab34cd", "title": "feat: event schema v3", "stages": ["ok","ok","ok","ok","ok"] }
+    ]},
+    { "name": "iam-policies",       "owner": "platform",  "pipelines": [
+      { "branch": "main",    "id": 3310, "status": "passed",  "dur": "00:01:48", "age": "3d",  "author": "david", "commit": "abcdef01", "title": "docs: policy catalog", "stages": ["ok","ok","ok","ok","ok"] }
+    ]},
+    { "name": "design-tokens",      "owner": "frontend",  "pipelines": [
+      { "branch": "main",    "id": 1180, "status": "passed",  "dur": "00:00:58", "age": "1d",  "author": "elena", "commit": "9988aabb", "title": "chore: release tokens 0.9", "stages": ["ok","ok","ok"] },
+      { "branch": "develop", "id": 1185, "status": "running", "dur": "00:00:22", "age": "10s", "author": "noa",   "commit": "7766ccdd", "title": "feat: dark palette v2", "stages": ["ok","run","skip"] }
+    ]},
+    { "name": "infra-terraform",    "owner": "platform",  "pipelines": [
+      { "branch": "main",    "id": 6611, "status": "passed",  "dur": "00:03:33", "age": "8h",  "author": "aitor", "commit": "55aa66bb", "title": "chore(infra): k8s 1.29 upgrade", "stages": ["ok","ok","ok","ok"] },
+      { "branch": "develop", "id": 6615, "status": "failed",  "dur": "00:02:10", "age": "1h",  "author": "marco", "commit": "ccdd11ee", "title": "feat: istio mesh", "stages": ["ok","fail","skip","skip"] }
+    ]},
+    { "name": "docs-site",          "owner": "frontend",  "pipelines": [
+      { "branch": "main",    "id": 442, "status": "passed", "dur": "00:00:45", "age": "10m", "author": "sara", "commit": "0df8a19c", "title": "docs: API v2 reference", "stages": ["ok","ok","ok"] }
+    ]}
+  ],
+  "mrs": [
+    { "repo": "auth-service",     "id": 312, "title": "feat(mfa): backup codes flow",               "author": "sara",  "from": "feature/mfa-backup",      "to": "develop", "reviewers": ["noa","aitor"],     "ci": "ok",   "days": 2, "approvals": "1/2" },
+    { "repo": "api-gateway",      "id": 877, "title": "fix(rate-limit): burst window regression",   "author": "lucia", "from": "feature/rate-limit-burst","to": "develop", "reviewers": ["marco"],           "ci": "run",  "days": 1, "approvals": "0/1" },
+    { "repo": "billing-worker",   "id": 144, "title": "refactor(stripe): webhook retry policy",     "author": "elena", "from": "refactor/stripe-retry",   "to": "develop", "reviewers": ["david","sara"],    "ci": "fail", "days": 4, "approvals": "0/2", "conflicts": true },
+    { "repo": "web-dashboard",    "id": 522, "title": "feat(ui): pipeline timeline component",      "author": "sara",  "from": "feature/pipeline-timeline","to": "develop","reviewers": ["lucia","noa"],     "ci": "ok",   "days": 1, "approvals": "2/2" },
+    { "repo": "mobile-app",       "id": 91,  "title": "feat(nav): deep links v2",                   "author": "elena", "from": "feature/deep-links-v2",   "to": "develop", "reviewers": ["noa"],             "ci": "run",  "days": 0, "approvals": "0/1" },
+    { "repo": "analytics-ingest", "id": 78,  "title": "feat: event schema v3",                      "author": "lucia", "from": "feature/schema-v3",       "to": "develop", "reviewers": ["marco","aitor"],   "ci": "ok",   "days": 3, "approvals": "1/2" },
+    { "repo": "search-index",     "id": 61,  "title": "perf: ngram tokenizer tuning",               "author": "aitor", "from": "perf/ngram",              "to": "develop", "reviewers": ["marco"],           "ci": "ok",   "days": 6, "approvals": "0/1", "stale": true },
+    { "repo": "infra-terraform",  "id": 33,  "title": "feat: istio mesh rollout",                   "author": "marco", "from": "feature/istio",           "to": "develop", "reviewers": ["aitor","david"],   "ci": "fail", "days": 2, "approvals": "0/2" },
+    { "repo": "notif-service",    "id": 205, "title": "feat: push provider fallback",               "author": "marco", "from": "feature/push-fallback",   "to": "develop", "reviewers": ["sara"],            "ci": "run",  "days": 0, "approvals": "0/1" },
+    { "repo": "design-tokens",    "id": 17,  "title": "feat: dark palette v2",                      "author": "noa",   "from": "feature/dark-v2",         "to": "main",    "reviewers": ["elena","lucia"],   "ci": "run",  "days": 1, "approvals": "0/2" }
+  ]
+}
+</script>
+
+<script type="text/babel" data-presets="env,react">
+const { useState, useMemo, useEffect } = React;
+const DATA = JSON.parse(document.getElementById('mock-data').textContent);
+
+/* =============================== TWEAKS =============================== */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "dark",
+  "density": "medium",
+  "showMRs": true,
+  "groupBy": "repo",
+  "cardSize": "medium",
+  "paperGrid": true,
+  "variation": "v1"
+}/*EDITMODE-END*/;
+
+function useTweaks() {
+  const [state, setState] = useState(() => {
+    try { const s = localStorage.getItem('tweaks'); if (s) return { ...TWEAK_DEFAULTS, ...JSON.parse(s) }; } catch(e){}
+    return TWEAK_DEFAULTS;
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = state.theme;
+    document.documentElement.dataset.density = state.density === 'medium' ? '' : state.density;
+    document.body.classList.toggle('paper-on', !!state.paperGrid);
+    try { localStorage.setItem('tweaks', JSON.stringify(state)); } catch(e){}
+  }, [state]);
+  const patch = (p) => {
+    const next = { ...state, ...p };
+    setState(next);
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: p }, '*'); } catch(e){}
+  };
+  return [state, patch];
+}
+
+/* =============================== ICONS (tiny) =============================== */
+const I = {
+  branch: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="4" cy="3" r="1.6"/><circle cx="4" cy="13" r="1.6"/><circle cx="12" cy="6" r="1.6"/><path d="M4 4.6v6.8M4 11c0-4 8-2 8-3.4"/></svg>,
+  commit: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="8" cy="8" r="2.4"/><path d="M1 8h4M11 8h4"/></svg>,
+  clock:  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>,
+  cal:    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="3.5" width="12" height="10" rx="1.5"/><path d="M2 6.5h12M5.5 2v3M10.5 2v3"/></svg>,
+  mr:     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="4" cy="4" r="1.6"/><circle cx="4" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><path d="M4 5.6v4.8M4 8c4 0 8 0 8 4"/></svg>,
+  check:  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 8.5l3.2 3L13 5"/></svg>,
+  x:      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 4l8 8M12 4l-8 8"/></svg>,
+  play:   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="8" cy="8" r="6"/><path d="M7 6l3 2-3 2z" fill="currentColor"/></svg>,
+  search: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>,
+  refresh:<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M13.5 3.5v3h-3M2.5 12.5v-3h3"/><path d="M12.5 6.5A5 5 0 003.5 7M3.5 9.5A5 5 0 0012.5 9"/></svg>,
+  filter: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2 3h12l-4.5 6v4l-3 1V9z"/></svg>,
+  sun:    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.5 1.5M11.5 11.5L13 13M3 13l1.5-1.5M11.5 4.5L13 3"/></svg>,
+  moon:   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M13 9.5A5 5 0 116.5 3 5 5 0 0013 9.5z"/></svg>,
+  pipe:   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="3" cy="8" r="1.7"/><circle cx="8" cy="8" r="1.7"/><circle cx="13" cy="8" r="1.7"/><path d="M4.7 8h1.6M9.7 8h1.6"/></svg>,
+  dl:     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M8 3v7M4.5 7.5L8 11l3.5-3.5M3 13h10"/></svg>,
+  workspace: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6h12M5 3v10"/></svg>,
+  group: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="5.5" cy="6" r="2"/><circle cx="10.5" cy="6" r="2"/><path d="M2 13c0-2 1.5-3 3.5-3s3.5 1 3.5 3M8 13c0-2 1-3 2.5-3S14 11 14 13"/></svg>,
+  subgroup: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M2 4h5l1.5 1.5H14V13H2z"/><path d="M5 8h6M5 10.5h4"/></svg>,
+  project: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M3 4h10v9H3z"/><path d="M3 7h10M6 4v9"/></svg>,
+  chev: <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M6 3l4 5-4 5"/></svg>
+};
+
+/* =============================== SMALL COMPONENTS =============================== */
+function StatusPill({ status, small }) {
+  const map = {
+    passed:  { cls: 'ok',   icon: I.check, label: 'Passed' },
+    failed:  { cls: 'fail', icon: I.x,     label: 'Failed' },
+    running: { cls: 'run',  icon: I.play,  label: 'Running' }
+  };
+  const m = map[status] || map.passed;
+  return <span className={`pill ${m.cls}`} style={small ? {padding:'1px 7px'} : null}>
+    <span style={{width:12,height:12,display:'inline-grid',placeItems:'center'}}>{m.icon}</span>
+    {m.label}
+  </span>;
+}
+
+function Stages({ stages }) {
+  return <span style={{display:'inline-flex', gap:3, alignItems:'center'}}>
+    {stages.map((s,i) => <span key={i} className={`sdot ${s}`} title={s}></span>)}
+  </span>;
+}
+
+function Avatar({ name }) {
+  const initials = name.slice(0,2).toUpperCase();
+  return <span className="av" title={name}>{initials}</span>;
+}
+
+function Chip({ icon, children }) {
+  return <span className="chip">{icon}{children}</span>;
+}
+
+function Squiggle() {
+  return <svg className="squiggle" viewBox="0 0 200 6" preserveAspectRatio="none">
+    <path d="M0 3 Q 10 0, 20 3 T 40 3 T 60 3 T 80 3 T 100 3 T 120 3 T 140 3 T 160 3 T 180 3 T 200 3" fill="none" stroke="currentColor" strokeWidth="1" />
+  </svg>;
+}
+
+/* =============================== SHELL =============================== */
+function Sidebar({ variation, setVariation }) {
+  return <aside className="sidebar">
+    <div className="brand">
+      <span className="logo">TL</span>
+      <span>TechLead</span>
+    </div>
+    <div className="navlbl">Proyecto</div>
+    <div className="navi active"><span className="sq"></span> platform-core <span className="badge mono">12</span></div>
+    <div className="navi"><span className="sq"></span> data-mesh <span className="badge mono">5</span></div>
+    <div className="navi"><span className="sq"></span> mobile-suite <span className="badge mono">3</span></div>
+
+    <div className="navlbl">Vista</div>
+    <div className="navi active">{I.pipe} Pipelines</div>
+    <div className="navi">{I.mr} Merge Requests <span className="badge mono">10</span></div>
+    <div className="navi">{I.branch} Ramas</div>
+    <div className="navi">{I.clock} Actividad</div>
+
+    <div className="navlbl">Equipo</div>
+    <div className="navi"><span className="sq"></span> backend</div>
+    <div className="navi"><span className="sq"></span> frontend</div>
+    <div className="navi"><span className="sq"></span> platform</div>
+    <div className="navi"><span className="sq"></span> data</div>
+  </aside>;
+}
+
+function Topbar({ tweaks, patch }) {
+  const [lastRefresh, setLastRefresh] = useState(12);
+  useEffect(() => {
+    const t = setInterval(() => setLastRefresh(s => (s+1) % 30), 1000);
+    return () => clearInterval(t);
+  }, []);
+  return <div className="topbar">
+    <div className="crumb">
+      <span style={{display:'inline-flex',alignItems:'center',gap:5}} title="Workspace GitLab">
+        <span style={{width:14,height:14,display:'inline-grid',placeItems:'center',color:'var(--ink-3)'}}>{I.workspace}</span>
+        Workspace
+      </span>
+      <span style={{color:'var(--ink-3)',display:'inline-flex',alignItems:'center',width:10,height:10}}>{I.chev}</span>
+      <span style={{display:'inline-flex',alignItems:'center',gap:5}} title="Grupo GitLab">
+        <span style={{width:14,height:14,display:'inline-grid',placeItems:'center',color:'var(--link)'}}>{I.group}</span>
+        sngular
+      </span>
+      <span style={{color:'var(--ink-3)',display:'inline-flex',alignItems:'center',width:10,height:10}}>{I.chev}</span>
+      <span style={{display:'inline-flex',alignItems:'center',gap:5}} title="Subgrupo GitLab (contenedor de repos)">
+        <span style={{width:14,height:14,display:'inline-grid',placeItems:'center',color:'var(--link)'}}>{I.subgroup}</span>
+        <b>platform-core</b>
+      </span>
+      <span style={{color:'var(--ink-3)',display:'inline-flex',alignItems:'center',width:10,height:10}}>{I.chev}</span>
+      <span style={{display:'inline-flex',alignItems:'center',gap:5}} title="Vista">
+        <span style={{width:14,height:14,display:'inline-grid',placeItems:'center',color:'var(--purple)'}}>{I.pipe}</span>
+        <b>Pipelines</b>
+      </span>
+    </div>
+    <div className="search rough-sm" style={{display:'flex', alignItems:'center', gap:8}}>
+      {I.search}
+      <span>Buscar repo, MR, autor, rama…</span>
+    </div>
+    <div style={{display:'flex', alignItems:'center', gap:8, marginLeft:'auto'}}>
+      <span style={{display:'inline-flex', alignItems:'center', gap:6, fontFamily:'var(--mono)', fontSize:12, color:'var(--ink-2)'}}>
+        <span className="dot-live"></span> live · {30-lastRefresh}s
+      </span>
+      <div className="iconbtn rough-sm" title="Refresh">{I.refresh}</div>
+      <div className="iconbtn rough-sm" title="Filter">{I.filter}</div>
+      <div className="iconbtn rough-sm" title="Theme" onClick={() => patch({ theme: tweaks.theme === 'dark' ? 'light' : 'dark'})}>
+        {tweaks.theme === 'dark' ? I.sun : I.moon}
+      </div>
+      <div className="btn rough-sm">New pipeline</div>
+    </div>
+  </div>;
+}
+
+/* =============================== VARIATION 1: Repo cards grid =============================== */
+function V1_RepoCardsGrid({ tweaks }) {
+  const cardMin = tweaks.cardSize === 'small' ? 280 : tweaks.cardSize === 'large' ? 440 : 360;
+  return <div>
+    <AttentionBar />
+    <div className="section-h">
+      <h2>Repos &amp; pipelines</h2>
+      <span className="count">{DATA.repos.length} repos · última por rama principal</span>
+      <span style={{marginLeft:'auto'}} className="legend">
+        <span><span className="sdot ok"></span> passed</span>
+        <span><span className="sdot run"></span> running</span>
+        <span><span className="sdot fail"></span> failed</span>
+      </span>
+    </div>
+    <div className="gridR" style={{'--card-min': `${cardMin}px`}}>
+      {DATA.repos.map(r => <RepoCard key={r.name} repo={r} tweaks={tweaks}/>)}
+    </div>
+    {tweaks.showMRs && <>
+      <div className="section-h" style={{marginTop:28}}>
+        <h2>Merge requests pendientes</h2>
+        <span className="count">{DATA.mrs.length} abiertas</span>
+      </div>
+      <MRList />
+    </>}
+  </div>;
+}
+
+function RepoCard({ repo, tweaks }) {
+  const bad = repo.pipelines.filter(p => p.status === 'failed').length;
+  const run = repo.pipelines.filter(p => p.status === 'running').length;
+  const relatedMRs = DATA.mrs.filter(m => m.repo === repo.name);
+  return <div className="card rough">
+    <div style={{display:'flex', alignItems:'center', gap:8}}>
+      <span style={{fontWeight:700, fontSize:18}}>{repo.name}</span>
+      <span className="chip">{repo.owner}</span>
+      <span style={{marginLeft:'auto', display:'flex', gap:6}}>
+        {bad > 0 && <span className="pill fail">{bad} fail</span>}
+        {run > 0 && <span className="pill run">{run} run</span>}
+        {tweaks.showMRs && relatedMRs.length > 0 && <span className="pill link">{relatedMRs.length} MR</span>}
+      </span>
+    </div>
+    <Squiggle />
+    <div style={{display:'grid', gap:8, marginTop:4}}>
+      {repo.pipelines.map(p => <PipelineRow key={p.id} p={p} />)}
+    </div>
+  </div>;
+}
+
+function PipelineRow({ p }) {
+  return <div className="row rough-sm" style={{background:'var(--bg-3)'}}>
+    <div style={{display:'flex', alignItems:'center', gap:10, flexWrap:'wrap'}}>
+      <StatusPill status={p.status} />
+      <Chip icon={I.branch}>{p.branch}</Chip>
+      <span className="mono" style={{color:'var(--link)'}}>#{p.id}</span>
+      <span style={{flex:1, minWidth:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', fontSize:14}}>{p.title}</span>
+    </div>
+    <div style={{display:'flex', alignItems:'center', gap:10, marginTop:6, flexWrap:'wrap'}}>
+      <Chip icon={I.commit}>{p.commit}</Chip>
+      <Chip icon={I.clock}>{p.dur}</Chip>
+      <Chip icon={I.cal}>{p.age}</Chip>
+      <Stages stages={p.stages}/>
+      <span style={{marginLeft:'auto', display:'flex', alignItems:'center', gap:6}}>
+        <Avatar name={p.author}/>
+        <span className="mono" style={{fontSize:11, color:'var(--ink-3)'}}>{p.author}</span>
+      </span>
+    </div>
+  </div>;
+}
+
+function AttentionBar() {
+  const fails = DATA.repos.reduce((a,r) => a + r.pipelines.filter(p => p.status==='failed').length, 0);
+  const runs  = DATA.repos.reduce((a,r) => a + r.pipelines.filter(p => p.status==='running').length, 0);
+  const blockedMRs = DATA.mrs.filter(m => m.ci === 'fail' || m.conflicts).length;
+  const staleMRs = DATA.mrs.filter(m => m.stale).length;
+  return <div className="notebox rough" style={{display:'flex', gap:18, alignItems:'center', flexWrap:'wrap'}}>
+    <b style={{fontSize:15}}>Necesita atención</b>
+    <span><span className="pill fail">{fails}</span> pipelines rojas</span>
+    <span><span className="pill run">{runs}</span> corriendo</span>
+    <span><span className="pill link">{blockedMRs}</span> MRs bloqueadas</span>
+    <span><span className="pill neutral">{staleMRs}</span> MRs viejas (&gt;5d)</span>
+    <span style={{marginLeft:'auto', fontFamily:'var(--mono)', fontSize:11, color:'var(--ink-3)'}}>actualizado hace 12s</span>
+  </div>;
+}
+
+function MRList() {
+  return <div className="rough" style={{background:'var(--bg-2)'}}>
+    <div className="th" style={{gridTemplateColumns:'1.3fr 2fr 1fr 1.2fr 0.8fr 0.6fr 0.6fr'}}>
+      <span>Repo / MR</span><span>Título</span><span>Autor</span><span>Rama → destino</span><span>Reviewers</span><span>CI</span><span>Aprob.</span>
+    </div>
+    {DATA.mrs.map(m => <div key={m.repo+m.id} className="tbl-row" style={{gridTemplateColumns:'1.3fr 2fr 1fr 1.2fr 0.8fr 0.6fr 0.6fr'}}>
+      <span><span className="mono" style={{color:'var(--link)'}}>{m.repo}!{m.id}</span>
+        {m.conflicts && <span className="pill fail" style={{marginLeft:6}}>conflict</span>}
+        {m.stale && <span className="pill neutral" style={{marginLeft:6}}>{m.days}d</span>}
+      </span>
+      <span style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{m.title}</span>
+      <span style={{display:'flex', alignItems:'center', gap:6}}><Avatar name={m.author}/><span className="mono" style={{fontSize:11,color:'var(--ink-2)'}}>{m.author}</span></span>
+      <span className="mono" style={{fontSize:11}}><span style={{color:'var(--purple)'}}>{m.from}</span> <span style={{color:'var(--ink-3)'}}>→</span> <span style={{color:'var(--ok)'}}>{m.to}</span></span>
+      <span style={{display:'flex', gap:2}}>{m.reviewers.map(r => <Avatar key={r} name={r}/>)}</span>
+      <span>{m.ci==='ok'?<span className="pill ok">ok</span>:m.ci==='fail'?<span className="pill fail">fail</span>:<span className="pill run">run</span>}</span>
+      <span className="mono" style={{fontSize:12}}>{m.approvals}</span>
+    </div>)}
+  </div>;
+}
+
+/* =============================== VARIATION 2: Heatmap matrix =============================== */
+function V2_Heatmap({ tweaks }) {
+  const branches = ['main','develop','release'];
+  // build 12 timeslot mock for each repo branch: pick from pipelines
+  const rnd = (seed) => { let s = seed; return () => { s = (s*9301+49297)%233280; return s/233280; }; };
+  return <div>
+    <AttentionBar />
+    <div className="section-h">
+      <h2>Matriz repos × tiempo</h2>
+      <span className="count">últimas 12 pipelines por rama principal · hover para detalle</span>
+    </div>
+
+    {branches.map(b => <div key={b} style={{marginBottom:18}}>
+      <div style={{display:'flex', alignItems:'center', gap:8, margin:'6px 0'}}>
+        <Chip icon={I.branch}>{b}</Chip>
+        <span className="mono" style={{fontSize:11, color:'var(--ink-3)'}}>más reciente →</span>
+      </div>
+      <div className="hm">
+        <div></div>
+        {Array.from({length:12}).map((_,i) => <div key={i} className="mono" style={{fontSize:10, color:'var(--ink-3)', textAlign:'center'}}>{i===0?'now':i+'h'}</div>)}
+        {DATA.repos.map((r,ri) => {
+          const rand = rnd(ri*7 + b.length);
+          return <React.Fragment key={r.name}>
+            <div className="label">{r.name}</div>
+            {Array.from({length:12}).map((_,i) => {
+              const roll = rand();
+              let cls = 'ok';
+              if (roll < 0.08) cls = 'fail';
+              else if (roll < 0.14) cls = 'run';
+              else if (roll < 0.2) cls = 'skip';
+              // highlight known failures at i=0 for relevant repos
+              if (i === 0) {
+                const latest = r.pipelines.find(p => p.branch === b || p.branch.startsWith(b));
+                if (latest) cls = latest.status === 'passed' ? 'ok' : latest.status === 'failed' ? 'fail' : latest.status === 'running' ? 'run' : cls;
+              }
+              return <div key={i} className={`cell ${cls}`}>{cls==='skip'?'·':''}</div>;
+            })}
+          </React.Fragment>;
+        })}
+      </div>
+    </div>)}
+
+    {tweaks.showMRs && <>
+      <div className="section-h"><h2>MRs pendientes</h2><span className="count">{DATA.mrs.length} abiertas</span></div>
+      <MRCompact />
+    </>}
+  </div>;
+}
+
+function MRCompact() {
+  return <div style={{display:'grid', gap:6}}>
+    {DATA.mrs.map(m => <div key={m.repo+m.id} className="row rough-sm" style={{background:'var(--bg-2)', display:'grid', gridTemplateColumns:'1fr 2fr auto auto auto', gap:12, alignItems:'center'}}>
+      <span className="mono" style={{fontSize:12, color:'var(--link)'}}>{m.repo}!{m.id}</span>
+      <span style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{m.title}</span>
+      <span className="mono" style={{fontSize:11, color:'var(--ink-2)'}}>{m.from} → {m.to}</span>
+      <span style={{display:'flex', alignItems:'center', gap:6}}><Avatar name={m.author}/>{m.reviewers.slice(0,2).map(r=> <Avatar key={r} name={r}/>)}</span>
+      <span>{m.ci==='ok'?<span className="pill ok">ok</span>:m.ci==='fail'?<span className="pill fail">fail</span>:<span className="pill run">run</span>}</span>
+    </div>)}
+  </div>;
+}
+
+/* =============================== VARIATION 3: Kanban by status =============================== */
+function V3_KanbanByStatus({ tweaks }) {
+  const allPipes = [];
+  DATA.repos.forEach(r => r.pipelines.forEach(p => allPipes.push({...p, repo: r.name})));
+  const cols = {
+    failed: allPipes.filter(p => p.status === 'failed'),
+    running: allPipes.filter(p => p.status === 'running'),
+    passed: allPipes.filter(p => p.status === 'passed')
+  };
+  const byMR = DATA.mrs;
+  return <div>
+    <AttentionBar />
+    <div className="section-h">
+      <h2>Tablero por estado</h2>
+      <span className="count">arrastra mentalmente · agrupado por estado en vez de repo</span>
+    </div>
+    <div className="kan">
+      <KanCol title="Failed" color="fail" count={cols.failed.length}>
+        {cols.failed.map(p => <MiniPipe key={p.repo+p.id} p={p}/>)}
+      </KanCol>
+      <KanCol title="Running" color="run" count={cols.running.length}>
+        {cols.running.map(p => <MiniPipe key={p.repo+p.id} p={p}/>)}
+      </KanCol>
+      <KanCol title="Passed (last)" color="ok" count={cols.passed.length}>
+        {cols.passed.slice(0,8).map(p => <MiniPipe key={p.repo+p.id} p={p}/>)}
+        {cols.passed.length > 8 && <div className="faint mono" style={{fontSize:11, padding:'4px 8px'}}>+ {cols.passed.length-8} más</div>}
+      </KanCol>
+      {tweaks.showMRs && <KanCol title="MRs abiertas" color="link" count={byMR.length}>
+        {byMR.map(m => <MiniMR key={m.repo+m.id} m={m}/>)}
+      </KanCol>}
+    </div>
+  </div>;
+}
+
+function KanCol({ title, color, count, children }) {
+  return <div className="col rough">
+    <h4><span className={`sdot ${color}`}></span> {title} <span className="count mono" style={{marginLeft:'auto', color:'var(--ink-3)'}}>{count}</span></h4>
+    <div style={{display:'grid', gap:8}}>{children}</div>
+  </div>;
+}
+
+function MiniPipe({ p }) {
+  return <div className="rough-sm" style={{padding:'8px 10px', background:'var(--bg-3)'}}>
+    <div style={{display:'flex', alignItems:'center', gap:6, fontSize:13}}>
+      <span style={{fontWeight:700}}>{p.repo}</span>
+      <span className="mono" style={{color:'var(--link)', fontSize:11}}>#{p.id}</span>
+      <span style={{marginLeft:'auto'}}><Avatar name={p.author}/></span>
+    </div>
+    <div style={{fontSize:13, margin:'4px 0', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{p.title}</div>
+    <div style={{display:'flex', gap:6, alignItems:'center', flexWrap:'wrap'}}>
+      <Chip icon={I.branch}>{p.branch}</Chip>
+      <Chip icon={I.clock}>{p.dur}</Chip>
+      <Stages stages={p.stages}/>
+    </div>
+  </div>;
+}
+
+function MiniMR({ m }) {
+  return <div className="rough-sm" style={{padding:'8px 10px', background:'var(--bg-3)'}}>
+    <div style={{display:'flex', alignItems:'center', gap:6}}>
+      <span className="mono" style={{color:'var(--link)', fontSize:11}}>{m.repo}!{m.id}</span>
+      {m.conflicts && <span className="pill fail" style={{marginLeft:'auto'}}>conflict</span>}
+    </div>
+    <div style={{fontSize:13, margin:'4px 0'}}>{m.title}</div>
+    <div style={{display:'flex', gap:6, alignItems:'center', flexWrap:'wrap'}}>
+      <Avatar name={m.author}/>
+      <span className="mono" style={{fontSize:11, color:'var(--ink-2)'}}>{m.from} → {m.to}</span>
+      <span style={{marginLeft:'auto'}}>{m.ci==='ok'?<span className="pill ok">ok</span>:m.ci==='fail'?<span className="pill fail">fail</span>:<span className="pill run">run</span>}</span>
+    </div>
+  </div>;
+}
+
+/* =============================== VARIATION 4: GitLab-style table list =============================== */
+function V4_TableList({ tweaks }) {
+  const rows = [];
+  DATA.repos.forEach(r => r.pipelines.forEach(p => rows.push({ ...p, repo: r.name })));
+  // sort fails first, then running, then by age
+  rows.sort((a,b) => {
+    const rank = s => s==='failed'?0 : s==='running'?1 : 2;
+    return rank(a.status)-rank(b.status);
+  });
+  return <div>
+    <AttentionBar />
+    <div className="section-h">
+      <h2>Todas las pipelines</h2>
+      <span className="count">{rows.length} pipelines · ordenadas por estado</span>
+    </div>
+
+    <div className="rough" style={{background:'var(--bg-2)', overflow:'hidden'}}>
+      <div className="th" style={{gridTemplateColumns:'140px 1.4fr 1fr 130px 100px 140px 100px'}}>
+        <span>Status</span><span>Repo / Pipeline</span><span>Rama / commit</span><span>Autor</span><span>Duración</span><span>Stages</span><span>Actions</span>
+      </div>
+      {rows.map(p => <div key={p.repo+p.id} className="tbl-row" style={{gridTemplateColumns:'140px 1.4fr 1fr 130px 100px 140px 100px'}}>
+        <span style={{display:'flex', flexDirection:'column', gap:4}}>
+          <StatusPill status={p.status}/>
+          <span className="mono" style={{fontSize:10, color:'var(--ink-3)', display:'flex', alignItems:'center', gap:5}}>{I.clock}{p.dur}</span>
+          <span className="mono" style={{fontSize:10, color:'var(--ink-3)', display:'flex', alignItems:'center', gap:5}}>{I.cal}{p.age}</span>
+        </span>
+        <span>
+          <div style={{display:'flex', alignItems:'center', gap:6}}>
+            <b>{p.repo}</b>
+            <span className="mono" style={{color:'var(--link)', fontSize:12}}>#{p.id}</span>
+          </div>
+          <div className="muted" style={{fontSize:13, marginTop:2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{p.title}</div>
+        </span>
+        <span style={{display:'flex', flexDirection:'column', gap:4}}>
+          <Chip icon={I.branch}>{p.branch}</Chip>
+          <Chip icon={I.commit}>{p.commit}</Chip>
+        </span>
+        <span style={{display:'flex', alignItems:'center', gap:6}}><Avatar name={p.author}/><span className="mono" style={{fontSize:11, color:'var(--ink-2)'}}>{p.author}</span></span>
+        <span className="mono" style={{fontSize:12}}>{p.dur}</span>
+        <span><Stages stages={p.stages}/></span>
+        <span><div className="iconbtn rough-sm" style={{width:30, height:28}}>{I.dl}</div></span>
+      </div>)}
+    </div>
+
+    {tweaks.showMRs && <>
+      <div className="section-h" style={{marginTop:24}}><h2>MRs pendientes</h2><span className="count">{DATA.mrs.length}</span></div>
+      <MRList/>
+    </>}
+  </div>;
+}
+
+/* =============================== VARIATION 5: Timeline / Gantt =============================== */
+function V5_Timeline({ tweaks }) {
+  return <div>
+    <AttentionBar />
+    <div className="section-h">
+      <h2>Timeline de pipelines</h2>
+      <span className="count">últimas 24h · una fila por repo, apilado por rama</span>
+    </div>
+    <div className="rough" style={{background:'var(--bg-2)', padding:'12px 14px'}}>
+      <div style={{display:'grid', gridTemplateColumns:'160px 1fr', gap:10, alignItems:'center', marginBottom:8}}>
+        <span></span>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(24,1fr)', gap:0, fontFamily:'var(--mono)', fontSize:10, color:'var(--ink-3)'}}>
+          {Array.from({length:24}).map((_,i) => <span key={i} style={{textAlign:'left', borderLeft:'1px dashed var(--line-2)', paddingLeft:2}}>{i}h</span>)}
+        </div>
+      </div>
+      {DATA.repos.map((r, ri) => <TimelineRow key={r.name} repo={r} seed={ri}/>)}
+    </div>
+
+    {tweaks.showMRs && <>
+      <div className="section-h" style={{marginTop:24}}><h2>MRs pendientes · vida de la MR</h2><span className="count">{DATA.mrs.length}</span></div>
+      <MRTimeline />
+    </>}
+  </div>;
+}
+
+function TimelineRow({ repo, seed }) {
+  // deterministic segments
+  const rnd = ((s) => () => { s = (s*9301+49297)%233280; return s/233280; })(seed*11+3);
+  const branches = Array.from(new Set(repo.pipelines.map(p => p.branch.split('/')[0])));
+  return <div style={{display:'grid', gridTemplateColumns:'160px 1fr', gap:10, alignItems:'center', padding:'6px 0', borderTop:'1.5px dashed var(--line-2)'}}>
+    <div style={{display:'flex', flexDirection:'column', gap:2}}>
+      <b style={{fontSize:14}}>{repo.name}</b>
+      <span className="mono" style={{fontSize:10, color:'var(--ink-3)'}}>{repo.owner}</span>
+    </div>
+    <div style={{display:'grid', gap:4}}>
+      {branches.map((b, bi) => {
+        // generate 4-7 pipeline segments across 24h
+        const n = 3 + Math.floor(rnd()*5);
+        const segs = [];
+        for (let i=0; i<n; i++) {
+          const start = rnd()*95;
+          const width = 1 + rnd()*4;
+          const roll = rnd();
+          const cls = roll < 0.15 ? 'fail' : roll < 0.22 ? 'run' : 'ok';
+          segs.push({ start, width, cls });
+        }
+        // latest one tied to actual
+        const latest = repo.pipelines.find(p => p.branch.startsWith(b));
+        if (latest) {
+          segs.push({ start: 96, width: 3.5, cls: latest.status==='passed'?'ok':latest.status==='failed'?'fail':'run', marker: true });
+        }
+        return <div key={b} style={{display:'grid', gridTemplateColumns:'80px 1fr', gap:6, alignItems:'center'}}>
+          <Chip icon={I.branch}>{b}</Chip>
+          <div className="bar" style={{height:14, background:'var(--bg-3)', position:'relative', borderRadius:3}}>
+            {segs.map((s,i) => <div key={i} className="seg" style={{
+              left: `${s.start}%`, width: `${s.width}%`,
+              background: s.cls==='ok'?'var(--ok)':s.cls==='fail'?'var(--fail)':'var(--run)',
+              opacity: s.marker ? 1 : 0.7,
+              boxShadow: s.marker ? '0 0 0 2px var(--bg-2)' : 'none'
+            }}/>)}
+          </div>
+        </div>;
+      })}
+    </div>
+  </div>;
+}
+
+function MRTimeline() {
+  return <div className="rough" style={{background:'var(--bg-2)', padding:'10px 14px'}}>
+    {DATA.mrs.map(m => {
+      const days = m.days || 0;
+      const pct = Math.min(100, (days/7)*100);
+      const old = days > 5;
+      return <div key={m.repo+m.id} style={{display:'grid', gridTemplateColumns:'200px 1fr 80px', gap:12, alignItems:'center', padding:'8px 0', borderTop:'1.5px dashed var(--line-2)'}}>
+        <div>
+          <div className="mono" style={{fontSize:11, color:'var(--link)'}}>{m.repo}!{m.id}</div>
+          <div style={{fontSize:13, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{m.title}</div>
+        </div>
+        <div style={{position:'relative', height:20}}>
+          <div style={{position:'absolute', inset:'8px 0', background:'var(--bg-3)', borderRadius:3}}></div>
+          <div style={{position:'absolute', left:0, top:4, width:`${pct}%`, height:12, background: old?'var(--fail)':m.ci==='fail'?'var(--fail)':m.ci==='run'?'var(--run)':'var(--link)', borderRadius:3, opacity:0.8}}></div>
+          <div style={{position:'absolute', left:`${pct}%`, top:0, height:20, display:'flex', alignItems:'center', gap:4, transform:'translateX(4px)', fontFamily:'var(--mono)', fontSize:11, color:'var(--ink-2)'}}>
+            <Avatar name={m.author}/>
+            {m.ci==='ok'?<span className="pill ok">ok</span>:m.ci==='fail'?<span className="pill fail">fail</span>:<span className="pill run">run</span>}
+          </div>
+        </div>
+        <span className="mono" style={{fontSize:12, color: old?'var(--fail)':'var(--ink-2)', textAlign:'right'}}>{days}d abierta</span>
+      </div>;
+    })}
+  </div>;
+}
+
+/* =============================== TWEAKS PANEL =============================== */
+function TweaksPanel({ tweaks, patch, open, setOpen }) {
+  return <>
+    <div className="note-stamp">
+      <div className="btn rough-sm" onClick={() => setOpen(!open)} style={{display:'flex', alignItems:'center', gap:6}}>
+        <span style={{width:8, height:8, borderRadius:'50%', background:'var(--ok)'}}></span> Tweaks {open?'▾':'▸'}
+      </div>
+    </div>
+    <div className={`tweaks-panel rough ${open?'open':''}`}>
+      <h3>Tweaks</h3>
+      <div className="tweaks-row">
+        <span>Theme</span>
+        <select value={tweaks.theme} onChange={e => patch({ theme: e.target.value })}>
+          <option value="dark">dark</option>
+          <option value="light">light</option>
+        </select>
+      </div>
+      <div className="tweaks-row">
+        <span>Densidad</span>
+        <select value={tweaks.density} onChange={e => patch({ density: e.target.value })}>
+          <option value="compact">compact</option>
+          <option value="medium">medium</option>
+          <option value="comfortable">comfortable</option>
+        </select>
+      </div>
+      <div className="tweaks-row">
+        <span>Mostrar MRs</span>
+        <button onClick={() => patch({ showMRs: !tweaks.showMRs })}>{tweaks.showMRs?'on':'off'}</button>
+      </div>
+      <div className="tweaks-row">
+        <span>Agrupar por</span>
+        <select value={tweaks.groupBy} onChange={e => patch({ groupBy: e.target.value })}>
+          <option value="repo">repo</option>
+          <option value="status">estado</option>
+          <option value="team">equipo</option>
+        </select>
+      </div>
+      <div className="tweaks-row">
+        <span>Tamaño tarjeta</span>
+        <select value={tweaks.cardSize} onChange={e => patch({ cardSize: e.target.value })}>
+          <option value="small">small</option>
+          <option value="medium">medium</option>
+          <option value="large">large</option>
+        </select>
+      </div>
+      <div className="tweaks-row">
+        <span>Grid papel</span>
+        <button onClick={() => patch({ paperGrid: !tweaks.paperGrid })}>{tweaks.paperGrid?'on':'off'}</button>
+      </div>
+    </div>
+  </>;
+}
+
+/* =============================== ROOT =============================== */
+const VARIATIONS = [
+  { id: 'v1', label: 'V1 · Repo cards',    sub: 'layout por defecto', C: V1_RepoCardsGrid },
+  { id: 'v2', label: 'V2 · Heatmap',        sub: 'matriz repo × tiempo', C: V2_Heatmap },
+  { id: 'v3', label: 'V3 · Kanban status',  sub: 'fails / running / passed', C: V3_KanbanByStatus },
+  { id: 'v4', label: 'V4 · Tabla GitLab',   sub: 'lista densa estilo GitLab', C: V4_TableList },
+  { id: 'v5', label: 'V5 · Timeline 24h',   sub: 'actividad temporal', C: V5_Timeline }
+];
+
+function App() {
+  const [tweaks, patch] = useTweaks();
+  const [open, setOpen] = useState(false);
+  const active = VARIATIONS.find(v => v.id === tweaks.variation) || VARIATIONS[0];
+  const Comp = active.C;
+
+  // Edit mode protocol
+  useEffect(() => {
+    const onMsg = (e) => {
+      if (!e.data) return;
+      if (e.data.type === '__activate_edit_mode') setOpen(true);
+      if (e.data.type === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e){}
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  return <div className="app">
+    <Sidebar/>
+    <main className="main" data-screen-label={active.label}>
+      <Topbar tweaks={tweaks} patch={patch}/>
+
+      <div className="notebox rough-sm" style={{background:'var(--bg-2)', marginBottom:10}}>
+        <b>Wireframe — Tech Lead Dashboard.</b> <span className="muted">
+          5 variaciones low-fi. Cambia entre ellas con las pestañas. Todo mockado; datos hardcoded.
+          Toggle tema con el ☀/☾ arriba a la derecha. Más ajustes en el panel <i>Tweaks</i>.
+        </span>
+      </div>
+
+      <div className="tabs">
+        {VARIATIONS.map(v => <div key={v.id}
+          className={`tab ${v.id === tweaks.variation ? 'active':''}`}
+          onClick={() => patch({ variation: v.id })}
+          data-screen-label={v.label}>
+          {v.label} <small>{v.sub}</small>
+        </div>)}
+      </div>
+
+      <Comp tweaks={tweaks}/>
+
+      <div style={{marginTop:40, color:'var(--ink-3)', fontSize:13, borderTop:'1.5px dashed var(--line-2)', paddingTop:12}}>
+        <b style={{color:'var(--ink-2)'}}>Notas para siguientes iteraciones:</b>
+        <ul style={{margin:'6px 0 0 18px', padding:0}}>
+          <li>Auto-refresh cada 30s — el indicador ya está (punto verde + contador) y sólo se anima.</li>
+          <li>Filtros por rama (main/develop/feature) — previstos, se pondrían en el topbar o sidebar en hi-fi.</li>
+          <li>Hi-fi: definir tono exacto del dark (más azulado o más neutro), tipografía definitiva (Inter/IBM Plex), y microinteracciones de hover por fila.</li>
+          <li>Pendiente: zona de "atención rápida" clicable que filtre por MRs bloqueadas / pipelines rojas.</li>
+        </ul>
+      </div>
+
+      <TweaksPanel tweaks={tweaks} patch={patch} open={open} setOpen={setOpen}/>
+    </main>
+  </div>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+
+</body>
+</html>
