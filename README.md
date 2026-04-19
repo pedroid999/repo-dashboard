@@ -1,5 +1,7 @@
 # repo-dashboard
 
+[![CI](https://github.com/pedroid999/repo-dashboard/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pedroid999/repo-dashboard/actions/workflows/ci.yml)
+
 Tech Lead Dashboard — Next.js 16 + Turborepo monorepo with Tailwind v4 and shadcn/ui, themed with the Kanagawa palette (Wave dark / Lotus light).
 
 ## Stack
@@ -67,6 +69,27 @@ Design tokens live in `packages/ui/src/styles/globals.css` as CSS custom propert
 - `.dark` → **Kanagawa Wave** (dark)
 
 Tokens map to shadcn's semantic names (`--background`, `--foreground`, `--primary`, `--destructive`, plus `--success`, `--warning`, `--info`). Press `d` on the landing page to toggle themes (via `next-themes`).
+
+## Continuous integration
+
+GitHub Actions runs five parallel jobs on every PR against `main` and on every push to `main`:
+
+- `typecheck` — `pnpm typecheck`
+- `lint` — `pnpm lint`
+- `test-unit` — `pnpm test` (Vitest, enforces 70% coverage thresholds)
+- `build` — `pnpm build`
+- `test-e2e` — Playwright smoke tests; on failure, uploads `playwright-report/` as a workflow artifact
+
+### Branch protection (manual setup)
+
+To enforce the green bar on `main`, add a branch-protection rule in **Settings → Branches**:
+
+- Branch name pattern: `main`
+- Require a pull request before merging
+- Require status checks to pass: `Typecheck`, `Lint`, `Unit tests`, `Build`, `E2E tests`
+- Require branches to be up to date before merging
+
+This step cannot be automated from inside the workflow; it must be configured once per repo.
 
 ## Design source
 
