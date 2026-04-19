@@ -1,0 +1,32 @@
+{
+  "name": "@workspace/domain",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.0",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "@workspace/vitest-config": "workspace:^",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "vite-tsconfig-paths": "^5.1.0",
+    "vitest": "^4.0.0"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas/*": "./src/schemas/*.ts",
+    "./fixtures/*": "./src/fixtures/*.ts",
+    "./sources/*": "./src/sources/*.ts"
+  }
+}
