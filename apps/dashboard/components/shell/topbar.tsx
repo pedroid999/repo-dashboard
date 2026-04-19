@@ -31,6 +31,9 @@ export function Topbar() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    // Required next-themes hydration gate: we must toggle the mount flag
+    // exactly once post-hydration to match server-rendered placeholder.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
 
