@@ -10,7 +10,19 @@ import { Sidebar } from "./sidebar"
 import { Topbar } from "./topbar"
 import { AttentionBar } from "./attention-bar"
 import { TweaksPanel } from "./tweaks-panel"
-import { VariationPlaceholder } from "../variations/placeholder"
+import { V1RepoCardsGrid } from "../variations/v1-repo-cards-grid"
+import { V2Heatmap } from "../variations/v2-heatmap"
+import { V3KanbanByStatus } from "../variations/v3-kanban-by-status"
+import { V4TableList } from "../variations/v4-table-list"
+import { V5Timeline } from "../variations/v5-timeline"
+
+const VARIATION_COMPONENTS: Record<Variation, () => React.ReactElement> = {
+  v1: V1RepoCardsGrid,
+  v2: V2Heatmap,
+  v3: V3KanbanByStatus,
+  v4: V4TableList,
+  v5: V5Timeline,
+}
 
 export interface DashboardShellProps {
   dataset: Dataset
@@ -62,7 +74,10 @@ export function DashboardShell({ dataset, initialVariation }: DashboardShellProp
             })}
           </div>
 
-          <VariationPlaceholder id={variation} />
+          {(() => {
+            const VariationComponent = VARIATION_COMPONENTS[variation]
+            return <VariationComponent />
+          })()}
 
           <TweaksPanel />
         </main>
