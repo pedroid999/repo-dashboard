@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "build", "stage": "build", "status": "success" },
+  { "id": 2, "name": "lint", "stage": "build", "status": "success" },
+  { "id": 3, "name": "unit", "stage": "test", "status": "success" },
+  { "id": 4, "name": "integration", "stage": "test", "status": "failed" },
+  { "id": 5, "name": "deploy-staging", "stage": "deploy", "status": "skipped" }
+]
