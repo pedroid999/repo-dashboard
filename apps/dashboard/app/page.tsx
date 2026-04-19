@@ -1,8 +1,6 @@
 import { Button } from "@workspace/ui/components/button"
 
 export default function Page() {
-  const broken: number = "force ci to fail"
-  void broken
   return (
     <main className="flex min-h-svh items-center justify-center p-8">
       <div className="flex max-w-lg flex-col gap-6">
