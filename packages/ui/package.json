@@ -50,12 +50,14 @@
     "vitest": "^4.0.0"
   },
   "exports": {
+    ".": "./src/index.ts",
     "./globals.css": "./src/styles/globals.css",
     "./styles/*": "./src/styles/*.css",
     "./postcss.config": "./postcss.config.mjs",
     "./fonts": "./src/fonts.ts",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
+    "./components/primitives/*": "./src/components/primitives/*.tsx",
     "./icons": "./src/icons/index.ts",
     "./icons/*": "./src/icons/*.tsx",
     "./hooks/*": "./src/hooks/*.ts"

@@ -103,4 +103,21 @@ describe("@workspace/ui/icons — barrel sanity", () => {
       expect(typeof exported).toBe("function")
     }
   })
+
+  it("every icon renders a single <svg> and honours the title prop", () => {
+    for (const name of EXPECTED_ICON_NAMES) {
+      const Icon = (Icons as unknown as Record<string, React.FC<SVGProps<SVGSVGElement>>>)[name]!
+      const withoutTitle = render(<Icon />)
+      expect(withoutTitle.container.querySelectorAll("svg").length).toBe(1)
+      expect(withoutTitle.container.querySelector("title")).toBeNull()
+      withoutTitle.unmount()
+
+      const withTitle = render(
+        <Icon {...({ title: `${name}-title` } as Record<string, string>)} />
+      )
+      const titleNode = withTitle.container.querySelector("title")
+      expect(titleNode?.textContent).toBe(`${name}-title`)
+      withTitle.unmount()
+    }
+  })
 })
