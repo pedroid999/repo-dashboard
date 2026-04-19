@@ -20,7 +20,6 @@ export default createVitestConfig({
         '**/*.d.ts',
         '**/__tests__/**',
         'app/layout.tsx',
-        'components/theme-provider.tsx',
       ],
       thresholds: { perFile: true, lines: 70, functions: 70, branches: 70, statements: 70 },
     },
