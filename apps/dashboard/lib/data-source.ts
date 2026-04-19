@@ -1,8 +1,8 @@
 import { MockDataSource, platformCoreFixture } from "@workspace/domain"
-import type { Dataset } from "@workspace/domain"
+import type { DataSource, Dataset } from "@workspace/domain"
 
-export const dataSource = new MockDataSource(platformCoreFixture)
+export const dataSource: DataSource = new MockDataSource(platformCoreFixture)
 
-export function getDataset(): Dataset {
+export function getDataset(): Promise<Dataset> {
   return dataSource.getDataset()
 }
