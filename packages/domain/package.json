@@ -1,6 +1,6 @@
 {
   "name": "@workspace/domain",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -27,6 +27,8 @@
     ".": "./src/index.ts",
     "./schemas/*": "./src/schemas/*.ts",
     "./fixtures/*": "./src/fixtures/*.ts",
-    "./sources/*": "./src/sources/*.ts"
+    "./sources/*": "./src/sources/*.ts",
+    "./selectors": "./src/selectors/index.ts",
+    "./selectors/*": "./src/selectors/*.ts"
   }
 }
