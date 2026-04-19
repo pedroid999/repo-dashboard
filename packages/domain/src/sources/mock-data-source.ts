@@ -11,19 +11,19 @@ export class MockDataSource implements DataSource {
     this.dataset = dataset
   }
 
-  getDataset(): Dataset {
-    return this.dataset
+  getDataset(): Promise<Dataset> {
+    return Promise.resolve(this.dataset)
   }
 
-  listRepos(): Repo[] {
-    return this.dataset.repos
+  listRepos(): Promise<Repo[]> {
+    return Promise.resolve(this.dataset.repos)
   }
 
-  listMRs(): MergeRequest[] {
-    return this.dataset.mrs
+  listMRs(): Promise<MergeRequest[]> {
+    return Promise.resolve(this.dataset.mrs)
   }
 
-  getRepo(name: string): Repo | undefined {
-    return this.dataset.repos.find((repo) => repo.name === name)
+  getRepo(name: string): Promise<Repo | undefined> {
+    return Promise.resolve(this.dataset.repos.find((repo) => repo.name === name))
   }
 }

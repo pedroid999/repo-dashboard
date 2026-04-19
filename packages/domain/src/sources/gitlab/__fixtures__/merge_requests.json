@@ -1,0 +1,38 @@
+[
+  {
+    "iid": 312,
+    "title": "feat(mfa): backup codes flow",
+    "author": { "username": "sara" },
+    "source_branch": "feature/mfa-backup",
+    "target_branch": "develop",
+    "reviewers": [{ "username": "noa" }, { "username": "aitor" }],
+    "head_pipeline": { "status": "success" },
+    "created_at": "2026-04-17T10:00:00.000Z",
+    "has_conflicts": false,
+    "draft": false
+  },
+  {
+    "iid": 144,
+    "title": "refactor(stripe): webhook retry policy",
+    "author": { "username": "elena" },
+    "source_branch": "refactor/stripe-retry",
+    "target_branch": "develop",
+    "reviewers": [{ "username": "david" }, { "username": "sara" }],
+    "head_pipeline": { "status": "failed" },
+    "created_at": "2026-04-15T10:00:00.000Z",
+    "has_conflicts": true,
+    "draft": false
+  },
+  {
+    "iid": 522,
+    "title": "feat(ui): pipeline timeline component",
+    "author": { "username": "sara" },
+    "source_branch": "feature/pipeline-timeline",
+    "target_branch": "develop",
+    "reviewers": [],
+    "head_pipeline": null,
+    "created_at": "2026-04-18T10:00:00.000Z",
+    "has_conflicts": false,
+    "draft": false
+  }
+]

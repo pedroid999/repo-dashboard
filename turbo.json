@@ -1,6 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "DATA_SOURCE",
+    "GITLAB_HOST",
+    "GITLAB_TOKEN",
+    "GITLAB_PROJECT_IDS"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

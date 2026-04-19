@@ -1,0 +1,7 @@
+{
+  "id": 42,
+  "name": "auth-service",
+  "path_with_namespace": "platform-core/auth-service",
+  "namespace": { "full_path": "platform-core", "path": "platform-core" },
+  "topics": ["backend", "auth"]
+}

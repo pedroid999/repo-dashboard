@@ -8,7 +8,7 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   const { v } = await searchParams
-  const dataset = getDataset()
+  const dataset = await getDataset()
   const variation = parseVariation(v)
   return (
     <DashboardShell dataset={dataset} initialVariation={variation} />

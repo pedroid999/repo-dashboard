@@ -1,0 +1,20 @@
+[
+  {
+    "id": 98132,
+    "sha": "9c02fd00abcdef1234567890",
+    "ref": "main",
+    "status": "failed",
+    "duration": 311,
+    "created_at": "2026-04-19T19:00:00.000Z",
+    "user": { "username": "noa" }
+  },
+  {
+    "id": 98131,
+    "sha": "1b77aa20aaaaaaaaaaaaaaaa",
+    "ref": "develop",
+    "status": "success",
+    "duration": 280,
+    "created_at": "2026-04-19T14:00:00.000Z",
+    "user": { "username": "sara" }
+  }
+]
