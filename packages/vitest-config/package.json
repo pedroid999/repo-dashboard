@@ -1,0 +1,17 @@
+{
+  "name": "@workspace/vitest-config",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    ".": "./base.ts"
+  },
+  "devDependencies": {
+    "@workspace/typescript-config": "workspace:^",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.1.4"
+  }
+}
