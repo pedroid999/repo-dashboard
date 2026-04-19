@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is([data-theme="dark"] *));
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../../../components/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
@@ -59,50 +59,8 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Kanagawa Lotus — light theme (default) */
-:root {
-    --background: #f2ecbc;
-    --foreground: #545464;
-    --card: #e9e0c4;
-    --card-foreground: #545464;
-    --popover: #e9e0c4;
-    --popover-foreground: #545464;
-    --primary: #624c83;
-    --primary-foreground: #f2ecbc;
-    --secondary: #dcd5ad;
-    --secondary-foreground: #545464;
-    --muted: #dcd5ad;
-    --muted-foreground: #43436c;
-    --accent: #4d699b;
-    --accent-foreground: #f2ecbc;
-    --destructive: #c84053;
-    --success: #6f894e;
-    --warning: #77713f;
-    --info: #4d699b;
-    --border: #a09cac;
-    --input: #dcd5ad;
-    --ring: #624c83;
-
-    --chart-1: #6f894e;
-    --chart-2: #4d699b;
-    --chart-3: #77713f;
-    --chart-4: #c84053;
-    --chart-5: #624c83;
-
-    --radius: 0.625rem;
-
-    --sidebar: #e9e0c4;
-    --sidebar-foreground: #545464;
-    --sidebar-primary: #624c83;
-    --sidebar-primary-foreground: #f2ecbc;
-    --sidebar-accent: #dcd5ad;
-    --sidebar-accent-foreground: #545464;
-    --sidebar-border: #a09cac;
-    --sidebar-ring: #624c83;
-}
-
-/* Kanagawa Wave — dark theme */
-.dark {
+/* Kanagawa Wave — dark theme (default) */
+:root, [data-theme="dark"] {
     --background: #1f1f28;
     --foreground: #dcd7ba;
     --card: #2a2a37;
@@ -131,6 +89,8 @@
     --chart-4: #e46876;
     --chart-5: #957fb8;
 
+    --radius: 0.625rem;
+
     --sidebar: #2a2a37;
     --sidebar-foreground: #dcd7ba;
     --sidebar-primary: #957fb8;
@@ -139,6 +99,92 @@
     --sidebar-accent-foreground: #dcd7ba;
     --sidebar-border: #54546d;
     --sidebar-ring: #957fb8;
+
+    /* Wireframe-named Kanagawa Wave aliases */
+    --bg: #1f1f28;
+    --bg-2: #2a2a37;
+    --bg-3: #363646;
+    --ink: #dcd7ba;
+    --ink-2: #c8c093;
+    --ink-3: #727169;
+    --line: #54546d;
+    --line-2: #363646;
+    --ok: #98bb6c;
+    --ok-bg: rgba(152, 187, 108, 0.22);
+    --ok-bg: color-mix(in oklch, var(--ok) 14%, transparent);
+    --fail: #e46876;
+    --fail-bg: rgba(228, 104, 118, 0.22);
+    --fail-bg: color-mix(in oklch, var(--fail) 14%, transparent);
+    --run: #e6c384;
+    --run-bg: rgba(230, 195, 132, 0.22);
+    --run-bg: color-mix(in oklch, var(--run) 14%, transparent);
+    --link: #7fb4ca;
+    --link-bg: rgba(127, 180, 202, 0.22);
+    --link-bg: color-mix(in oklch, var(--link) 14%, transparent);
+    --purple: #957fb8;
+}
+
+/* Kanagawa Lotus — light theme */
+[data-theme="light"] {
+    --background: #f2ecbc;
+    --foreground: #545464;
+    --card: #e9e0c4;
+    --card-foreground: #545464;
+    --popover: #e9e0c4;
+    --popover-foreground: #545464;
+    --primary: #624c83;
+    --primary-foreground: #f2ecbc;
+    --secondary: #dcd5ad;
+    --secondary-foreground: #545464;
+    --muted: #dcd5ad;
+    --muted-foreground: #43436c;
+    --accent: #4d699b;
+    --accent-foreground: #f2ecbc;
+    --destructive: #c84053;
+    --success: #6f894e;
+    --warning: #77713f;
+    --info: #4d699b;
+    --border: #a09cac;
+    --input: #dcd5ad;
+    --ring: #624c83;
+
+    --chart-1: #6f894e;
+    --chart-2: #4d699b;
+    --chart-3: #77713f;
+    --chart-4: #c84053;
+    --chart-5: #624c83;
+
+    --sidebar: #e9e0c4;
+    --sidebar-foreground: #545464;
+    --sidebar-primary: #624c83;
+    --sidebar-primary-foreground: #f2ecbc;
+    --sidebar-accent: #dcd5ad;
+    --sidebar-accent-foreground: #545464;
+    --sidebar-border: #a09cac;
+    --sidebar-ring: #624c83;
+
+    /* Wireframe-named Kanagawa Lotus aliases */
+    --bg: #f2ecbc;
+    --bg-2: #e9e0c4;
+    --bg-3: #dcd5ad;
+    --ink: #545464;
+    --ink-2: #43436c;
+    --ink-3: #8a8980;
+    --line: #a09cac;
+    --line-2: #c9c9a7;
+    --ok: #6f894e;
+    --ok-bg: rgba(111, 137, 78, 0.22);
+    --ok-bg: color-mix(in oklch, var(--ok) 14%, transparent);
+    --fail: #c84053;
+    --fail-bg: rgba(200, 64, 83, 0.22);
+    --fail-bg: color-mix(in oklch, var(--fail) 14%, transparent);
+    --run: #77713f;
+    --run-bg: rgba(119, 113, 63, 0.22);
+    --run-bg: color-mix(in oklch, var(--run) 14%, transparent);
+    --link: #4d699b;
+    --link-bg: rgba(77, 105, 155, 0.22);
+    --link-bg: color-mix(in oklch, var(--link) 14%, transparent);
+    --purple: #624c83;
 }
 
 @layer base {
@@ -147,5 +193,31 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+@layer components {
+    /* Hand-drawn asymmetric rough borders (UIC-3) */
+    .rough {
+        border: 1.5px solid var(--line);
+        border-radius: 10px 12px 9px 11px / 11px 9px 12px 10px;
+    }
+    .rough-2 {
+        border: 1.5px solid var(--line);
+        border-radius: 14px 9px 13px 10px / 9px 14px 10px 13px;
+    }
+    .rough-sm {
+        border: 1.2px solid var(--line);
+        border-radius: 6px 8px 5px 7px / 7px 5px 8px 6px;
+    }
+    .dashed {
+        border: 1.5px dashed var(--line);
+        border-radius: 10px 12px 9px 11px / 11px 9px 12px 10px;
+    }
+
+    /* Paper grid (UIC-4) */
+    body.paper-on {
+        background-image: radial-gradient(var(--line-2) 0.8px, transparent 0.8px);
+        background-size: 22px 22px;
     }
 }
