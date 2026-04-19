@@ -1,30 +1,12 @@
-import { Space_Grotesk, JetBrains_Mono, Orbitron } from "next/font/google"
-
 import "@workspace/ui/globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@workspace/ui/components/theme-provider"
+import { hand, mono, display } from "@workspace/ui/fonts"
 import { cn } from "@workspace/ui/lib/utils"
-
-const fontSans = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["300", "400", "500", "600", "700"],
-})
-
-const fontMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["400", "500", "700"],
-})
-
-const fontDisplay = Orbitron({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["500", "700"],
-})
 
 export const metadata = {
   title: "Tech Lead Dashboard",
-  description: "Repo dashboard for tech leads — Kanagawa-themed monorepo skeleton.",
+  description:
+    "Repo dashboard for tech leads — Kanagawa-themed monorepo skeleton.",
 }
 
 export default function RootLayout({
@@ -34,14 +16,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       suppressHydrationWarning
       className={cn(
         "antialiased",
-        fontSans.variable,
-        fontMono.variable,
-        fontDisplay.variable,
-        "font-sans",
+        hand.variable,
+        mono.variable,
+        display.variable,
+        "font-sans"
       )}
     >
       <body>
