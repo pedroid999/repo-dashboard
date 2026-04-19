@@ -1,8 +1,21 @@
 import { createVitestConfig } from '@workspace/vitest-config'
 import react from '@vitejs/plugin-react'
+import { fileURLToPath } from 'node:url'
+
+const serverOnlyStub = fileURLToPath(
+  new URL(
+    '../../node_modules/.pnpm/server-only@0.0.1/node_modules/server-only/empty.js',
+    import.meta.url
+  )
+)
 
 export default createVitestConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      'server-only': serverOnlyStub,
+    },
+  },
   test: {
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
