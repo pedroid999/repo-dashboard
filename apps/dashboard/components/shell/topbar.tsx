@@ -26,8 +26,13 @@ const breadcrumbColors = [
 ]
 
 export function Topbar() {
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
   const [tick, setTick] = useState(0)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -39,8 +44,19 @@ export function Topbar() {
   const remaining = 30 - tick
 
   const handleToggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
+    setTheme(resolvedTheme === "dark" ? "light" : "dark")
   }
+
+  const themeIcon = !mounted ? (
+    <span
+      aria-hidden="true"
+      style={{ width: 14, height: 14, display: "inline-block" }}
+    />
+  ) : resolvedTheme === "dark" ? (
+    <SunIcon />
+  ) : (
+    <MoonIcon />
+  )
 
   return (
     <div className="topbar">
@@ -136,9 +152,10 @@ export function Topbar() {
         <IconButton icon={<RefreshIcon />} label={copy.topbar.iconTitles.refresh} />
         <IconButton icon={<FilterIcon />} label={copy.topbar.iconTitles.filter} />
         <IconButton
-          icon={theme === "dark" ? <SunIcon /> : <MoonIcon />}
+          icon={themeIcon}
           label={copy.topbar.iconTitles.theme}
-          onClick={handleToggleTheme}
+          disabled={!mounted}
+          onClick={mounted ? handleToggleTheme : undefined}
         />
         <button
           type="button"

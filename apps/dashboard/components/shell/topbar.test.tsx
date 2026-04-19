@@ -7,6 +7,7 @@ let themeValue = "dark"
 vi.mock("@workspace/ui/components/theme-provider", () => ({
   useTheme: () => ({
     theme: themeValue,
+    resolvedTheme: themeValue,
     setTheme: (t: string) => {
       themeValue = t
       setTheme(t)
