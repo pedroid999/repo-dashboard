@@ -1,3 +1,5 @@
+import "server-only"
+
 export type LogEvent = {
   level: "warn"
   source: "gitlab"
