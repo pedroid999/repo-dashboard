@@ -15,8 +15,15 @@ const viewIconMap = {
   activity: ClockIcon,
 } as const
 
-export function Sidebar() {
-  const activeProject = "platform-core"
+export interface SidebarProps {
+  projects?: ReadonlyArray<{ slug: string; count: number }>
+  selectedProject?: string | null
+  onSelectProject?: (slug: string | null) => void
+}
+
+export function Sidebar({ projects, selectedProject, onSelectProject }: SidebarProps = {}) {
+  const displayProjects = projects ?? copy.sidebar.projects
+  const activeProject = selectedProject ?? null
   const activeView = "pipelines"
   return (
     <aside className="sidebar">
@@ -29,13 +36,18 @@ export function Sidebar() {
 
       <h3 className="navlbl">{copy.sidebar.sections.project}</h3>
       <nav aria-label={copy.sidebar.sections.project}>
-        {copy.sidebar.projects.map((p) => {
+        {displayProjects.map((p) => {
           const isActive = p.slug === activeProject
           return (
             <div
               key={p.slug}
+              role="button"
+              tabIndex={0}
               className={`navi${isActive ? " active" : ""}`}
               aria-current={isActive ? "page" : undefined}
+              onClick={() => onSelectProject?.(isActive ? null : p.slug)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onSelectProject?.(isActive ? null : p.slug) }}
+              style={{ cursor: "pointer" }}
             >
               <span className="sq" aria-hidden="true" />
               <span>{p.slug}</span>

@@ -108,9 +108,9 @@ describe("gitlab mappers (GL-5, GL-6)", () => {
       expect(formatDur(59)).toBe("00:00:59")
     })
 
-    it("treats null/undefined as 00:00:00", () => {
-      expect(formatDur(null)).toBe("00:00:00")
-      expect(formatDur(undefined)).toBe("00:00:00")
+    it("returns — for null/undefined (unknown duration)", () => {
+      expect(formatDur(null)).toBe("—")
+      expect(formatDur(undefined)).toBe("—")
     })
   })
 

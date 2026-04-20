@@ -95,6 +95,7 @@ export function V4TableList() {
               </div>
               <div
                 className="muted"
+                title={p.title}
                 style={{
                   fontSize: 13,
                   marginTop: 2,

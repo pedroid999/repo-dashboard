@@ -33,13 +33,14 @@ function buildDataSource(): DataSource {
     )
   }
   const projectIds = parseProjectIds(process.env.GITLAB_PROJECT_IDS)
-  if (projectIds.length === 0) {
+  const groupIds = parseProjectIds(process.env.GITLAB_GROUP_IDS)
+  if (projectIds.length === 0 && groupIds.length === 0) {
     throw new Error(
-      "GITLAB_PROJECT_IDS must list at least one project when DATA_SOURCE=gitlab."
+      "GITLAB_PROJECT_IDS or GITLAB_GROUP_IDS must list at least one entry when DATA_SOURCE=gitlab."
     )
   }
   const host = process.env.GITLAB_HOST ?? "https://gitlab.com"
-  return new GitLabDataSource({ host, token, projectIds })
+  return new GitLabDataSource({ host, token, projectIds, groupIds })
 }
 
 export const dataSource: DataSource = buildDataSource()

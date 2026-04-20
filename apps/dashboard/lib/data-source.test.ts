@@ -45,6 +45,7 @@ describe("apps/dashboard data-source factory (GL-2, GL-3, GL-4, DM-5)", () => {
     delete process.env.GITLAB_HOST
     delete process.env.GITLAB_TOKEN
     delete process.env.GITLAB_PROJECT_IDS
+    delete process.env.GITLAB_GROUP_IDS
     vi.resetModules()
   })
 
@@ -116,17 +117,37 @@ describe("apps/dashboard data-source factory (GL-2, GL-3, GL-4, DM-5)", () => {
   )
 
   it(
-    'throws when DATA_SOURCE=gitlab but GITLAB_PROJECT_IDS=""',
+    "throws when DATA_SOURCE=gitlab but both GITLAB_PROJECT_IDS and GITLAB_GROUP_IDS are empty",
     withEnv(
       {
         DATA_SOURCE: "gitlab",
         GITLAB_TOKEN: "glpat-abc",
         GITLAB_PROJECT_IDS: "",
+        GITLAB_GROUP_IDS: "",
       },
       async () => {
         await expect(import("./data-source")).rejects.toThrow(
-          /GITLAB_PROJECT_IDS must list at least one project/
+          /GITLAB_PROJECT_IDS or GITLAB_GROUP_IDS/
         )
+      }
+    )
+  )
+
+  it(
+    "accepts GITLAB_GROUP_IDS alone when GITLAB_PROJECT_IDS is empty",
+    withEnv(
+      {
+        DATA_SOURCE: "gitlab",
+        GITLAB_TOKEN: "glpat-abc",
+        GITLAB_PROJECT_IDS: "",
+        GITLAB_GROUP_IDS: "workspace/sso",
+      },
+      async () => {
+        const { dataSource } = await import("./data-source")
+        const { GitLabDataSource } = await import(
+          "@workspace/domain/sources/gitlab/index"
+        )
+        expect(dataSource).toBeInstanceOf(GitLabDataSource)
       }
     )
   )

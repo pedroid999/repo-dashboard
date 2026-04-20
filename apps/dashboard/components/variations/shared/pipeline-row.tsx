@@ -26,14 +26,15 @@ export function PipelineRow({ pipeline: p }: PipelineRowProps) {
       style={{ background: "var(--bg-3)" }}
     >
       <div
-        style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}
+        style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", minWidth: 0, overflow: "hidden" }}
       >
         <StatusPill status={p.status} />
-        <Chip icon={<BranchIcon />}>{p.branch}</Chip>
+        <Chip icon={<BranchIcon />} title={p.branch}>{p.branch}</Chip>
         <span className="mono" style={{ color: "var(--link)" }}>
           #{p.id}
         </span>
         <span
+          title={p.title}
           style={{
             flex: 1,
             minWidth: 0,
