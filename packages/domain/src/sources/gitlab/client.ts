@@ -2,6 +2,7 @@ import "server-only"
 
 import type {
   GitLabCommit,
+  GitLabGroupProject,
   GitLabJob,
   GitLabMergeRequest,
   GitLabMergeRequestApprovals,
@@ -88,6 +89,17 @@ export class GitLabClient {
     return this.request<GitLabMergeRequest[]>(
       `/projects/${encodeProjectId(projectId)}/merge_requests?${query.toString()}`,
       REVALIDATE_RECENT
+    )
+  }
+
+  async getGroupProjects(groupId: string): Promise<GitLabGroupProject[]> {
+    const query = new URLSearchParams({
+      per_page: "100",
+      with_shared: "false",
+    })
+    return this.request<GitLabGroupProject[]>(
+      `/groups/${encodeProjectId(groupId)}/projects?${query.toString()}`,
+      REVALIDATE_PROJECT
     )
   }
 

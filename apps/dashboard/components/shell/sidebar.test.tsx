@@ -20,14 +20,20 @@ describe("Sidebar (AS-4)", () => {
     expect(labels).toEqual(["Proyecto", "Vista", "Equipo"])
   })
 
-  it("marks platform-core as the current project via aria-current=page", () => {
-    render(<Sidebar />)
+  it("marks the selectedProject as current via aria-current=page", () => {
+    render(<Sidebar selectedProject="platform-core" />)
     const active = screen.getByText("platform-core").closest("[aria-current]")
     expect(active?.getAttribute("aria-current")).toBe("page")
   })
 
-  it("renders data-mesh and mobile-suite without marking them current", () => {
+  it("marks no project as current when selectedProject is null", () => {
     render(<Sidebar />)
+    const items = screen.getAllByRole("button")
+    expect(items.every((el) => el.getAttribute("aria-current") === null)).toBe(true)
+  })
+
+  it("renders data-mesh and mobile-suite without marking them current", () => {
+    render(<Sidebar selectedProject="platform-core" />)
     const dataMesh = screen.getByText("data-mesh").closest("[aria-current]")
     const mobile = screen.getByText("mobile-suite").closest("[aria-current]")
     expect(dataMesh).toBeNull()

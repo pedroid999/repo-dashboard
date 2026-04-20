@@ -26,12 +26,16 @@ interface RouteOverrides {
   mergeRequests?: unknown
   approvals?: unknown
   project?: unknown
+  groupProjects?: unknown
 }
 
 function installFetchStub(overrides: RouteOverrides = {}) {
   const calls: FetchCall[] = []
   const fetchImpl = vi.fn(async (url: string, init?: RequestInit) => {
     calls.push({ url, init: (init ?? {}) as FetchCall["init"] })
+    if (url.includes("/groups/") && url.includes("/projects")) {
+      return makeResponse(overrides.groupProjects ?? [])
+    }
     if (url.includes("/pipelines/") && url.includes("/jobs")) {
       return makeResponse(overrides.jobs ?? jobsFixture)
     }
@@ -118,6 +122,41 @@ describe("GitLabDataSource.getDataset (GL-5)", () => {
       projectIds: ["platform-core/auth-service"],
     })
     await expect(adapter.getDataset()).rejects.toThrow(/GitLab/i)
+  })
+
+  it("expands groupIds to project ids and fetches each project", async () => {
+    const groupProjects = [
+      { id: 101, name: "auth-service", path_with_namespace: "workspace/sso/auth-service" },
+      { id: 102, name: "api-gateway", path_with_namespace: "workspace/sso/api-gateway" },
+    ]
+    const { calls } = installFetchStub({ groupProjects })
+    const adapter = new GitLabDataSource({
+      host: "https://gitlab.example.com",
+      token: "glpat-abc",
+      projectIds: [],
+      groupIds: ["workspace/sso"],
+    })
+    const dataset = await adapter.getDataset()
+    expect(dataset.repos).toHaveLength(2)
+    const groupCall = calls.find((c) => c.url.includes("/groups/"))
+    expect(groupCall?.url).toContain("/groups/workspace%2Fsso/projects")
+  })
+
+  it("deduplicates projects that appear in both projectIds and groupIds", async () => {
+    const groupProjects = [
+      { id: 42, name: "auth-service", path_with_namespace: "pc/auth-service" },
+    ]
+    const { calls } = installFetchStub({ groupProjects })
+    const adapter = new GitLabDataSource({
+      host: "https://gitlab.example.com",
+      token: "glpat-abc",
+      projectIds: ["42"],
+      groupIds: ["pc"],
+    })
+    const dataset = await adapter.getDataset()
+    expect(dataset.repos).toHaveLength(1)
+    const projectCalls = calls.filter((c) => /\/projects\/\d+$/.test(c.url))
+    expect(projectCalls).toHaveLength(1)
   })
 
   it("iterates every configured project id", async () => {

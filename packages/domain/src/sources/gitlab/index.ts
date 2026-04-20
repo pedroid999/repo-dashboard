@@ -27,15 +27,39 @@ export interface GitLabDataSourceConfig {
   host: string
   token: string
   projectIds: string[]
+  groupIds?: string[]
 }
 
 export class GitLabDataSource implements DataSource {
   private readonly client: GitLabClient
   private readonly projectIds: string[]
+  private readonly groupIds: string[]
 
   constructor(config: GitLabDataSourceConfig) {
     this.client = new GitLabClient({ host: config.host, token: config.token })
     this.projectIds = config.projectIds
+    this.groupIds = config.groupIds ?? []
+  }
+
+  private async resolveProjectIds(): Promise<string[]> {
+    if (this.groupIds.length === 0) return this.projectIds
+
+    const allIds = [...this.projectIds]
+    const seen = new Set(this.projectIds)
+
+    const groupProjectArrays = await Promise.all(
+      this.groupIds.map((id) => this.client.getGroupProjects(id))
+    )
+    for (const projects of groupProjectArrays) {
+      for (const p of projects) {
+        const id = String(p.id)
+        if (!seen.has(id)) {
+          seen.add(id)
+          allIds.push(id)
+        }
+      }
+    }
+    return allIds
   }
 
   async getDataset(): Promise<Dataset> {
@@ -44,7 +68,9 @@ export class GitLabDataSource implements DataSource {
     const mrs: MergeRequest[] = []
 
     const perProject = await Promise.all(
-      this.projectIds.map((projectId) => this.fetchProject(projectId, now))
+      (await this.resolveProjectIds()).map((projectId) =>
+        this.fetchProject(projectId, now)
+      )
     )
 
     let projectLabel = "gitlab"
@@ -173,6 +199,7 @@ export class GitLabDataSource implements DataSource {
 
 function repoOwner(project: GitLabProject): string {
   return (
+    project.topics?.[0] ??
     project.namespace?.path ??
     project.path_with_namespace.split("/").slice(0, -1).join("/") ??
     "unknown"

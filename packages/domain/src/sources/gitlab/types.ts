@@ -30,6 +30,8 @@ export interface GitLabJob {
   name: string
   stage: string
   status: string
+  started_at?: string | null
+  finished_at?: string | null
 }
 
 export interface GitLabCommit {
@@ -59,4 +61,10 @@ export interface GitLabMergeRequest {
 export interface GitLabMergeRequestApprovals {
   approvals_required: number
   approvals_left: number
+}
+
+export interface GitLabGroupProject {
+  id: number
+  name: string
+  path_with_namespace: string
 }

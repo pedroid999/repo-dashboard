@@ -253,7 +253,7 @@
   .navi.active { background: var(--bg-3); color: var(--ink); }
   .sq { width:14px; height:14px; border: 1.4px solid currentColor; border-radius: 3px 5px 4px 3px / 4px 3px 5px 4px; display:inline-block; }
 
-  .main { padding: 18px 26px 40px; max-width: 1400px; }
+  .main { padding: 18px 26px 40px; max-width: 1400px; min-width: 0; overflow-x: hidden; }
   .topbar { display:flex; align-items:center; gap: 14px; margin-bottom: 14px; }
   .crumb { color: var(--ink-2); font-size: 15px; display:flex; gap:8px; align-items:center; }
   .crumb b { color: var(--ink); }
@@ -303,8 +303,8 @@
   [data-density="compact"] .row { padding: 6px 10px; }
   [data-density="comfortable"] .card { padding: 18px 18px; }
   [data-density="comfortable"] .row { padding: 12px 14px; }
-  .card { padding: 14px; background: var(--bg-2); }
-  .row { padding: 10px 12px; }
+  .card { padding: 14px; background: var(--bg-2); min-width: 0; overflow: hidden; }
+  .row { padding: 10px 12px; min-width: 0; overflow: hidden; }
 
   /* Tweaks panel */
   .tweaks-panel {

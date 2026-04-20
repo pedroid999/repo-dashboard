@@ -33,7 +33,8 @@ describe("GitLabClient (GL-3, GL-7)", () => {
       await client.getJobs("platform/auth", 123)
       await client.getCommit("platform/auth", "abc")
       await client.getMergeRequests("platform/auth")
-      expect(fetchSpy).toHaveBeenCalledTimes(5)
+      await client.getGroupProjects("workspace/sso")
+      expect(fetchSpy).toHaveBeenCalledTimes(6)
       for (const call of fetchSpy.mock.calls) {
         const init = call[1] as RequestInit
         const headers = init.headers as Record<string, string>
@@ -62,6 +63,16 @@ describe("GitLabClient (GL-3, GL-7)", () => {
       expect(url).toContain("per_page=20")
       expect(url).toContain("order_by=id")
       expect(url).toContain("sort=desc")
+    })
+
+    it("URL-encodes the group id and targets the groups/projects endpoint", async () => {
+      fetchSpy.mockResolvedValue(jsonResponse([]))
+      const client = new GitLabClient({ host, token })
+      await client.getGroupProjects("workspace/sso")
+      const url = fetchSpy.mock.calls[0]?.[0] as string
+      expect(url).toContain("/groups/workspace%2Fsso/projects")
+      expect(url).toContain("per_page=100")
+      expect(url).toContain("with_shared=false")
     })
 
     it("uses state=opened&per_page=50 for merge_requests", async () => {

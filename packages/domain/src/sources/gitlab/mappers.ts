@@ -71,7 +71,8 @@ export function mapStages(jobs: GitLabJob[]): Stage[] {
 }
 
 export function formatDur(duration: number | null | undefined): string {
-  const secs = duration ?? 0
+  if (duration == null) return "—"
+  const secs = duration
   const h = Math.floor(secs / 3600)
   const m = Math.floor((secs % 3600) / 60)
   const s = secs % 60
@@ -141,17 +142,25 @@ export function mapMrDays(createdAt: string, now: number = Date.now()): number {
   return Math.floor(diff / 86_400_000)
 }
 
+function durationFromJobs(jobs: GitLabJob[]): number | null {
+  const starts = jobs.flatMap((j) => (j.started_at ? [new Date(j.started_at).getTime()] : []))
+  const ends = jobs.flatMap((j) => (j.finished_at ? [new Date(j.finished_at).getTime()] : []))
+  if (starts.length === 0 || ends.length === 0) return null
+  return Math.round((Math.max(...ends) - Math.min(...starts)) / 1000)
+}
+
 export function mapPipeline(
   pipeline: GitLabPipeline,
   jobs: GitLabJob[],
   commit: GitLabCommit | undefined,
   now: number = Date.now()
 ): Pipeline {
+  const duration = pipeline.duration ?? durationFromJobs(jobs)
   return {
     branch: pipeline.ref,
     id: pipeline.id,
     status: mapPipelineStatus(pipeline.status),
-    dur: formatDur(pipeline.duration),
+    dur: formatDur(duration),
     age: formatAge(pipeline.created_at, now),
     author: pipeline.user?.username ?? "",
     commit: mapCommit(pipeline.sha),
